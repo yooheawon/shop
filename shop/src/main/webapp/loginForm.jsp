@@ -28,7 +28,7 @@
 		</form>
 	</div>
 	<div>
-		<form id="employeeForm" action="<%= request.getContextPath()%>/employeeLoginAction"method="post">
+		<form id="employeeForm" action="<%= request.getContextPath()%>/employeeLoginAction.jsp"method="post">
 			<fieldset>
 				<legend>쇼핑몰 스탭 로그인</legend>
 				<table border="1">
