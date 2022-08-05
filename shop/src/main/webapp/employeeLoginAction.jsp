@@ -1,4 +1,5 @@
-<%@page import="model.EmployeeDao"%>
+<%@page import="service.EmployeeService"%>
+<%@page import="repository.EmployeeDao"%>
 <%@page import="vo.Employee"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -21,10 +22,10 @@ Employee employee = new Employee();
 employee.setEmployeeId(employeeId);
 employee.setEmployeePw(employeePw);
 // 디버깅
-System.out.println(employee+"커스터머");
+System.out.println(employee+"스탭");
 
-EmployeeDao customersDao = new EmployeeDao();
-Employee e = customersDao.login(employee);
+EmployeeService employeeService = new EmployeeService();
+Employee e = employeeService.getEmployee(employee);
 
 // Redirect
 if(e == null){

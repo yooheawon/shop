@@ -1,4 +1,6 @@
-<%@page import="model.CustomerDao"%>
+<%@page import="service.CustomerService"%>
+<%@page import="org.apache.jasper.tagplugins.jstl.core.Param"%>
+<%@page import="repository.CustomerDao"%>
 <%@page import="vo.Customer"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%
@@ -21,8 +23,8 @@ customer.setCustomerPw(customerPw);
 // 디버깅
 System.out.println(customer+"커스터머");
 
-CustomerDao customersDao = new CustomerDao();
-Customer c = customersDao.login(customer);
+CustomerService customerService = new CustomerService();
+Customer c = customerService.getCustomer(customer);
 
 // Redirect
 if(c == null){
