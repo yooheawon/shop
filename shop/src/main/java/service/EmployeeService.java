@@ -1,6 +1,8 @@
 package service;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import repository.DBUtil;
 import repository.EmployeeDao;
@@ -21,7 +23,7 @@ public class EmployeeService {
 			// 두개의 Dao 동일한 conn이 들어가도록
 			// CustomerDao 호출 - 삭제
 			EmployeeDao EmployeeDao = new EmployeeDao();
-			if(EmployeeDao.deleteEmployee(conn, paramEmployee)!=1) { // 1)
+			if(EmployeeDao.deleteEmployee(conn, paramEmployee) !=1 ) { // 1)
 				throw new Exception();
 			};
 			// outid 테이블에 삭제한 아이디 insert
@@ -127,4 +129,132 @@ public class EmployeeService {
 		}
 		return selectEmployeeByIdAndPw; // 탈퇴 실패
 	}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+// employeeList.jsp 페이징 처리
+	public ArrayList<Employee> getEmployeeList(int rowPerPage, int currentPage){
+		
+		ArrayList<Employee> list = new ArrayList<Employee>();
+		
+		Connection conn = null;
+		int beginRow = (currentPage-1)*rowPerPage;
+		
+		try {
+			conn = new DBUtil().getConnection();
+			conn.setAutoCommit(false);			// 자동 커밋 막아줌
+		
+			EmployeeDao employeeDao = new EmployeeDao();
+			list = employeeDao.selectEmployeeList(conn, rowPerPage, beginRow);
+			
+			// 디버깅
+			System.out.println("list : " + list);
+			
+			if(list==null) {	
+				throw new Exception();
+			}
+			
+			conn.commit();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		
+		return list;
+	}	// end getEmployeeList
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+	public int getlastPage(int rowPerPage) {
+		
+		Connection conn = null;
+		
+		try {
+			conn = new DBUtil().getConnection();
+			conn.setAutoCommit(false);
+			
+			EmployeeDao employeeDao = new EmployeeDao();
+			rowPerPage = employeeDao.lastPage(conn);
+	
+			// 디버깅
+			System.out.println("rowPerPage : " + rowPerPage);
+			
+	     if(rowPerPage == 0) {	// 실패시 예외처리로..
+	    	 throw new Exception();
+	     }
+				conn.commit();
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+				try {
+					conn.rollback();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+
+			} finally {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+			}
+	      return rowPerPage;
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+	// active 변경
+	public int modifyEmployeeActive(Employee employeeActive) {
+		
+		Connection conn = null;
+		int active = 0;
+		
+		try {
+			conn = new DBUtil().getConnection();
+			conn.setAutoCommit(false);
+		
+			EmployeeDao employeeDao = new EmployeeDao();
+			active = employeeDao.updateEmployeeActive(conn, employeeActive);
+			
+			// 디버깅
+			System.out.println("active : " + active);
+			
+			if(active == 0) {	// 실패시 예외처리로..
+				throw new Exception();
+			}
+			conn.commit();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return active;
+		
+	}
+	
 }

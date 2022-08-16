@@ -37,7 +37,7 @@ if(e == null){
 	session.setAttribute("Id", e.getEmployeeId());
 	session.setAttribute("Name", e.getEmployeeName());
 	System.out.println("로그인 성공");
-	response.sendRedirect(request.getContextPath() + "/index.jsp");
+	response.sendRedirect(request.getContextPath() + "/employeeIndex.jsp");
 	
 }
 %>

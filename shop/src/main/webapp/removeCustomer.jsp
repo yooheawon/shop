@@ -6,8 +6,8 @@
 
 <% 
 //get parameter
-String customerId = request.getParameter("customerId");
-String customerPass = request.getParameter("customerPass");
+String customerId = request.getParameter("Id");
+String customerPass = request.getParameter("Pw");
 
 
 //variable

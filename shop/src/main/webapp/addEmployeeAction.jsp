@@ -28,6 +28,6 @@
 	employeeService.addEmployee(paramEmployee);
 	
 	
-	response.sendRedirect(request.getContextPath()+"/index.jsp");
+	response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 
 %>

@@ -7,8 +7,8 @@
 
 <% 
 //get parameter
-String employeeId = request.getParameter("employeeId");
-String employeePass = request.getParameter("employeePass");
+String employeeId = request.getParameter("Id");
+String employeePass = request.getParameter("Pw");
 
 
 //variable
@@ -39,7 +39,7 @@ if(result == true){
    //debugging
    System.out.println("탈퇴 여부 : 실패");
    //redirection
-   response.sendRedirect(request.getContextPath()+"/index.jsp");
+   response.sendRedirect(request.getContextPath()+"/loginForm.jsp");
 }
 
 

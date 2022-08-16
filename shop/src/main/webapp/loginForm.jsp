@@ -46,7 +46,7 @@
 										<td><input type="text" name="customerPass" id="customerPass"></td>
 									</tr>
 								</table>
-								<button type="button" id="customerBtn">고객 로그인</button>
+								<button type=button id="customerBtn">고객 로그인</button>
 							</fieldset>
 						</form>
 		                <a href="<%= request.getContextPath()%>/addCustomer.jsp" class="btn btn-danger">고객 회원가입</a>

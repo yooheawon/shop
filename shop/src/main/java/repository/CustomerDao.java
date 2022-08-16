@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.spi.DirStateFactory.Result;
 
@@ -100,5 +102,119 @@ public class CustomerDao {
 			//디버깅
 			System.out.println("로그인 작동 정상");
 			return c;		
-	}		
+	}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 페이징을 하기위한 총 개시물 수
+	public int getLastPage(Connection conn) throws SQLException {
+		
+		String sql = "SELECT COUNT(*) FROM goods";
+		PreparedStatement stmt=null;
+		ResultSet rs= null;
+		int totalCount=0;
+		
+		stmt = conn.prepareStatement(sql);
+		rs=stmt.executeQuery();
+		
+		if (rs.next()) {
+			totalCount = rs.getInt("COUNT(*)");
+		}
+		if (rs != null) {
+			rs.close();
+		}
+		if (stmt != null) {
+			stmt.close();
+		}
+		return totalCount;
+	}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 커스터머 리스트를 출력하기 위해
+	public List<Customer> selectCustomerList(Connection conn, final int rowPerPage, final int beginRow) throws SQLException{
+		List<Customer> list = new ArrayList<Customer>();
+		/*
+		 	SELECT * FROM customer limit ?,?
+		 */
+		String sql="SELECT customer_id customerId, customer_pass customerPw,customer_name customerName, customer_Address customerAddress"
+				+ ",customer_telephone CustomerTelephone, update_date updateDate, create_date createDate"
+				+ " FROM customer limit ?,?";
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, beginRow);
+			stmt.setInt(2, rowPerPage);
+			
+			// 디버깅
+			System.out.println("beginRow : " + beginRow);
+			System.out.println("rowPerPage : " + rowPerPage);
+			// 쿼리
+			rs = stmt.executeQuery();
+			System.out.println(rs+"ff");
+			while(rs.next()) {
+				Customer customer = new Customer();
+				customer.setCustomerId(rs.getString("CustomerId"));
+				customer.setCustomerPw(rs.getString("CustomerPw"));
+				customer.setCustomerName(rs.getString("CustomerName"));
+				customer.setCustomerAddress(rs.getString("CustomerAddress"));
+				customer.setCustomerTelephone(rs.getString("CustomerTelephone"));
+				customer.setUpdateDate(rs.getString("updateDate"));
+				customer.setCreateDate(rs.getString("createDate"));
+				
+				// 디버깅
+				System.out.println(customer.toString());
+				
+				list.add(customer);
+			}
+		} finally{
+			if(rs != null) {rs.close();}
+			if(stmt != null) {stmt.close();}
+		}
+		return list;
+		
+	}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public int updateCustomerPw(Connection conn , Customer customer) throws SQLException {
+		int row = 0;
+		/*
+		 * UPDATE customer Set customer_pass=? where customer_id=?
+		 */
+		String sql = "UPDATE customer Set customer_pass=? where customer_id=?";
+		PreparedStatement stmt = null;
+		try {
+			stmt=conn.prepareStatement(sql);
+			stmt.setString(1, customer.getCustomerPw());
+			stmt.setString(2, customer.getCustomerId());
+			row = stmt.executeUpdate();
+			//디버깅
+			System.out.println("row : " + row);
+		} finally {
+			if(stmt != null) {stmt.close();}
+		}
+		return row;
+	}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// admin에서 고객 삭제
+	public int deleteCustomerByAdmin(String customerId, Connection conn) throws SQLException {
+		int row=0;
+		/*
+		 * DELETE FROM customer WHERE customer_id
+		 */
+		String sql  = "DELETE FROM customer WHERE customer_id=?";
+		PreparedStatement stmt  = null;
+		try {
+			// 쿼리 담기
+			stmt=conn.prepareStatement(sql);
+			stmt.setString(1, customerId);
+			// 디버깅
+			System.out.println("deleteCustomerByAdmin : " + stmt);
+			// 쿼리 실행
+			row = stmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return row;
+	}
 }

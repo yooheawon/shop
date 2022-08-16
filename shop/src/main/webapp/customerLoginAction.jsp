@@ -36,7 +36,7 @@ if(c == null){
 	session.setAttribute("Id", c.getCustomerId());
 	session.setAttribute("Name", c.getCustomerName());
 	System.out.println("로그인 성공");
-	response.sendRedirect(request.getContextPath() + "/index.jsp");
+	response.sendRedirect(request.getContextPath() + "/customerIndex.jsp");
 	
 }
 %>

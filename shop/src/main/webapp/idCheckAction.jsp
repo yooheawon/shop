@@ -3,7 +3,6 @@
     pageEncoding="UTF-8"%>
 <%
 	String ckId = request.getParameter("ckId");
-
 	SignService signService = new SignService();
 	
 	if (!signService.idCheck(ckId)) {
@@ -13,4 +12,4 @@
 	}else{
 	//service의 리턴값이 true일때
 	response.sendRedirect(request.getContextPath()+"/addCustomer.jsp?ckId="+ckId);}
-%>
+%> 

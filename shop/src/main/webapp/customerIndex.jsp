@@ -34,7 +34,7 @@
 	</tr>
 	</table>
 		<a href="<%=request.getContextPath()%>/logout.jsp">로그아웃</a>
-		<a href="<%=request.getContextPath()%>/outIdForm.jsp">회원탈퇴</a>
+		<a href="<%=request.getContextPath()%>/customerOutIdForm.jsp">회원탈퇴</a>
 	</div>
 </body>
 <%@ include file="footer.jsp"%>
