@@ -1,12 +1,11 @@
 package vo;
 
-public class Noitce {
-	public int noticeNo;
-	public String noticeTitle;
-	public String noticeContemt;
-	public String updateDate;
-	public String createDate;
-	
+public class Notice {
+	private int noticeNo;
+	private String noticeTitle;
+	private String noticeContent;
+	private String updateDate;
+	private String createDate;
 	public int getNoticeNo() {
 		return noticeNo;
 	}
@@ -19,11 +18,11 @@ public class Noitce {
 	public void setNoticeTitle(String noticeTitle) {
 		this.noticeTitle = noticeTitle;
 	}
-	public String getNoticeContemt() {
-		return noticeContemt;
+	public String getNoticeContent() {
+		return noticeContent;
 	}
-	public void setNoticeContemt(String noticeContemt) {
-		this.noticeContemt = noticeContemt;
+	public void setNoticeContent(String noticeContent) {
+		this.noticeContent = noticeContent;
 	}
 	public String getUpdateDate() {
 		return updateDate;
@@ -40,7 +39,9 @@ public class Noitce {
 	
 	@Override
 	public String toString() {
-		return "Noitce [noticeNo=" + noticeNo + ", noticeTitle=" + noticeTitle + ", noticeContemt=" + noticeContemt
+		return "Notice [noticeNo=" + noticeNo + ", noticeTitle=" + noticeTitle + ", noticeContent=" + noticeContent
 				+ ", updateDate=" + updateDate + ", createDate=" + createDate + "]";
 	}
+	
+	
 }

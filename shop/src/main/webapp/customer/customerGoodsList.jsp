@@ -94,8 +94,8 @@
          %>
                <td>
                   <div>
-                  	<a href="">
-                  		<img src="<%=request.getContextPath()%>../upload/<%=m.get("filename")%>" width="200" height="200"></a>
+                  	<a href="<%=request.getContextPath()%>/customer/customerGoodsOne.jsp>">
+                  		<img src="<%=request.getContextPath()%>/upload/<%=m.get("fileName")%>" width="200" height="200"></a>
                   </div>
                   <div><%=m.get("goodsName")%></div>
                   <div><%=m.get("goodsPrice")%></div>

@@ -32,7 +32,7 @@
 	GoodsService goodsService = new GoodsService();
 	List <Goods> list= new ArrayList<Goods>();
 	
-	list = goodsService.selectGoodsListByPage(rowPerPage, currentPage);
+	list = goodsService.getGoodsListByPage(rowPerPage, currentPage);
 	lastPage = goodsService.getLastPage(rowPerPage);
 	System.out.print(lastPage);
 	
@@ -100,27 +100,25 @@
 		<tbody>
 			<%
 			for (Goods g : list) {
+				System.out.println("no : "+ g.getGoodsNo());
 			%>
 			<tr>
 				<td><%=g.getGoodsNo() %></td>
 				<td>
-					<a href="<%=request.getContextPath()%>/admin/​​​admingoodsImgOne.jsp?goodsNo=<%=g.getGoodsNo() %>">
-					<%=g.getGoodsName() %></a>
+					<a href ="<%= request.getContextPath()%>/admin/adminGoodsOne.jsp?goodsNo=<%=g.getGoodsNo()%>"><%= g.getGoodsName() %></a>
 				</td>
 				<td><%=g.getGoodsPrice() %></td>
 				<td><%=g.getUpdateDate() %></td>
 				<td><%=g.getCreateDate() %></td>
 				<td><%=g.getSoldOut() %></td>
+
 			</tr>
-		
 	<% 
 	}
 	%>
 	</tbody>
 	</table>	
-	
-	
-	
+	</div>
 	<!--  페이징  -->
 	<%
 		if (currentPage > 1) {

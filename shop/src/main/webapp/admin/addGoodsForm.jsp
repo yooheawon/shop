@@ -2,10 +2,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	Employee employee = (Employee) session.getAttribute("employeeId");
-	if (employee == null) {
-    out.print("<script>alert('권한없음');location.href='/admin/adminGoodList.jsp'</script>");
-	}	
+	if(session.getAttribute("Id") == null){
+		response.sendRedirect(request.getContextPath() + "/loginForm.jsp?errorMsg=Not logged in");
+		return;
+	} else if(session.getAttribute("Id") != null && "customer".equals((String)session.getAttribute("user"))) {
+		// 관리자가 아닌경우 막기
+		response.sendRedirect(request.getContextPath() + "/loginForm.jsp?errorMsg=No permission");
+		 out.print("<script>alert('권한없음');location.href='/admin/adminGoodList.jsp'</script>");
+	}
+
 %>
 <!DOCTYPE html>
 <html>

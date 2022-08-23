@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import vo.GoodsImg;
 
 public class GoodsImgDao {
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 이미지 삭제
 	public int deleteGoodImg(Connection conn, GoodsImg goodImg) throws SQLException {
 		int row = 0;
@@ -50,7 +51,30 @@ public class GoodsImgDao {
 			stmt.close();
 		}
 		return row;
+	}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 상품 이미지 수정
+	public int updateGoodsImg(Connection conn , GoodsImg goodsImg) throws Exception {
+		// 리턴값 초기화
+		int updateGoodsImg = 0;
+		String sql = "UPDATE goods_img SET filename=? origin_filename=?, content_type=?, create date= NOW() WHERE goods_no;";
+		PreparedStatement stmt = null;
 		
+		// 입력값 불러오기
+		stmt = conn.prepareStatement(sql);
+		stmt.setString(1, goodsImg.getImgFileName());
+		stmt.setString(2, goodsImg.getImgOriginFileName());
+		stmt.setString(3, goodsImg.getImgContentType());
+		stmt.setString(4, goodsImg.getImgCreateDate());
+		stmt.setInt(5, goodsImg.getImggoodsNo());
 		
+		updateGoodsImg = stmt.executeUpdate();
+		// 디버깅
+		System.out.println("상품이미지 dao : "+ updateGoodsImg);
+		
+		if ( stmt != null) {
+			stmt.close();
+		}
+		return updateGoodsImg;
 	}
 }

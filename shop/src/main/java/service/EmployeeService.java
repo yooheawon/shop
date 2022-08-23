@@ -91,6 +91,7 @@ public class EmployeeService {
 		}
 	}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 로그인
 	public Employee getEmployee(Employee paramEmployee) {
 		Connection conn=null;
 		Employee selectEmployeeByIdAndPw = null;

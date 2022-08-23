@@ -32,11 +32,11 @@ if(c == null){
 	response.sendRedirect(request.getContextPath() + "/loginForm.jsp?errMsg=loginFail");
 	return;
 }else{
-	session.setAttribute("user", "손님");
+	session.setAttribute("user", "customer");
 	session.setAttribute("Id", c.getCustomerId());
 	session.setAttribute("Name", c.getCustomerName());
 	System.out.println("로그인 성공");
-	response.sendRedirect(request.getContextPath() + "/customerIndex.jsp");
+	response.sendRedirect(request.getContextPath() + "/customer/customerGoodsList.jsp");
 	
 }
 %>

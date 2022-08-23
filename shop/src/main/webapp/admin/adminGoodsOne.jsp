@@ -6,8 +6,12 @@
 <%@ page import = "service.*" %>
 <%@ page import = "repository.*" %>
     
+    
 <%
-	int goodsNo = Integer.parseInt(request.getParameter("goodsNo")); 
+	request.setCharacterEncoding("utf-8");
+	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
+	System.out.println("goodsno : " + goodsNo);
+	Goods goods = new Goods();
 	GoodsService goodsService = new GoodsService();
 	Map<String, Object> map = goodsService.getGoodsAndImgOne(goodsNo);
 %>    
@@ -20,7 +24,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-해결
 <h1> 제품 상세보기 </h1>
 <table border="1">
 	<thead>
@@ -46,6 +49,11 @@
 	</tr>
 	</tbody>	
 </table>
+	<div>
+		<a href="<%= request.getContextPath() %>/admin/adminGoodsUpdateForm.jsp?goodsNo=<%=goodsNo%>">수정</a>
+		<a href="<%= request.getContextPath() %>/admin/adminGoodsDelete.jsp">삭제</a>
+	</div>
+
 
 	
 </body>

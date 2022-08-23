@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -70,7 +71,7 @@
 							 <a href="<%=request.getContextPath()%>/admin/adminList.jsp" class="nav-item nav-link active">사원 관리</a>
 							 <a href="<%=request.getContextPath()%>/admin/adminGoodList.jsp" class="nav-item nav-link active">상품 관리</a> 
 							 <a href="<%=request.getContextPath()%>/admin/adminOrderList.jsp" class="nav-item nav-link active">주문 관리</a> 
-						 	 <a href="<%=request.getContextPath()%>/admin/adminNoticeList.jsp" class="nav-item nav-link active">공지 관리(게시판)</a>
+						 	 <a href="${pageContext.request.contextPath}/NoticeList" class="nav-item nav-link active">공지 관리(게시판)</a>
 						 	 <a href="<%=request.getContextPath()%>/employeeIndex.jsp" class="nav-item nav-link active">로그인 확인 페이지</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block">

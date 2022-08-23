@@ -33,7 +33,7 @@ if(e == null){
 	response.sendRedirect(request.getContextPath() + "/loginForm.jsp?errMsg=loginFail");
 	return;
 }else{
-	session.setAttribute("user", "스탭");
+	session.setAttribute("user", "employee");
 	session.setAttribute("Id", e.getEmployeeId());
 	session.setAttribute("Name", e.getEmployeeName());
 	System.out.println("로그인 성공");

@@ -71,8 +71,8 @@
 		if(f.exists()){
 			f.delete(); // return boolean
 		}
-		
-		response.sendRedirect(request.getContextPath() + "/admin/addGoodsForm.jsp?errorMsg=insert error");
+	}else{
+		response.sendRedirect(request.getContextPath() + "/admin/adminGoodList.jsp");
 		return;
 	}
 %>

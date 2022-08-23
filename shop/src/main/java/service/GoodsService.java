@@ -22,7 +22,7 @@ public class GoodsService {
    
  	goodsDao 호출
  */
-	private GoodsDao goodsDao; 
+	private GoodsDao goodsDao;  // 의존성을 약하게 하기 위해 private화
 	private DBUtil dbUtil;
 	
 
@@ -67,19 +67,23 @@ public class GoodsService {
 		this.dbUtil = new DBUtil();
 	}
 	
-	public List<Goods> selectGoodsListByPage(int rowPerPage, int currentPage) throws SQLException {
+	// 상품리스트
+	public List<Goods> getGoodsListByPage(int rowPerPage, int currentPage) throws SQLException {
+		// 리턴할 변수 생성
 		List<Goods> list = new ArrayList<Goods>();
 		Connection conn=null;
 		int beginRow=(currentPage-1)*rowPerPage;
 		
 		try {
 			conn = dbUtil.getConnection();
+			// 상품리스트 받아오기
 			list = goodsDao.selectGoodsListByPage(conn, rowPerPage, beginRow);
 			
 			// 디버깅
 			System.out.println("list : "+list);
 			
 			if(list == null) {
+				
 				throw new Exception();
 			}
 			conn.commit();
@@ -221,9 +225,9 @@ public class GoodsService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
+				//예외 발생시 초기화
 				conn.rollback();
 			} catch (SQLException e1) {
-				
 				e1.printStackTrace();
 			}
 		}finally {
@@ -236,6 +240,7 @@ public class GoodsService {
 		System.out.println("MAP : "+ map);
 		return map;
 	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	public List<Map<String,Object>> getCustomerGoodsListByPage(final int rowPerPage, final int currentPage){
 		List<Map<String, Object>> list = null;
@@ -257,9 +262,18 @@ public class GoodsService {
 			// 상품리스트 받아오기
 			GoodsDao goodsDao = new GoodsDao();
 			list = goodsDao.selectCustomerGoodsListByPage(conn, rowPerPage, beginRow);
-			
+			System.out.println("list : "+list);
+			if (list == null ) {
+				throw new Exception();
+			}
+			conn.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		}finally {
 			// db자원 해제
 			if (conn != null) {
@@ -271,5 +285,73 @@ public class GoodsService {
 			}
 		}
 		return list;
+	}
+///////////////////////////////////////////////////////////////////////////////////
+	// admin 으로 goods 삭제
+	public boolean removeGoodsByAdmin(int goodsNo) {
+		//conn 초기화
+		Connection conn= null;
+		GoodsDao goodsDao = new GoodsDao();
+		try {
+			conn = new DBUtil().getConnection();
+			int row = goodsDao.deleteGoodsByAdmin(goodsNo, conn);
+			
+			if (row == 1) {
+				System.out.println("goods 삭제 성공");
+			} else {
+				System.out.println("goods 삭제 실패");
+			}
+		} catch (Exception e) {
+			return false;
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		}
+		
+		return true;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 상품 수정
+	public int modifyGoods(Goods goods, GoodsImg goodsImg) throws Exception {
+		// 리턴값 초기화
+		int modifyGoods = 0;
+		Connection conn = null;
+		
+		// 객체생성
+		this.goodsDao = new GoodsDao();
+		this.goodsImgDao = new GoodsImgDao();
+		
+		try {
+			conn  = new DBUtil().getConnection();
+			// 자동커밋 방지
+			conn.setAutoCommit(false);
+			modifyGoods = goodsDao.updateGoods(conn, goods);
+			// 디버깅
+			System.out.println("modifyGoodsService : "+modifyGoods);
+			// 상품관련 데이터 이상 없을때
+			// 이미지 오류 유무 점검
+			System.out.println("modifyGoods : "+modifyGoods);
+			if (modifyGoods != 0 ) {
+				modifyGoods  = goodsImgDao.updateGoodsImg(conn, goodsImg);
+				conn.commit();
+				
+			}else {
+				throw new Exception();
+			}
+			
+			// 디버깅
+			System.out.println("modifyGoodsService : "+modifyGoods);
+		} catch (Exception e) {
+			if (conn != null) {
+				conn.close();
+			}
+		}
+		return modifyGoods;
+		
 	}
 }
